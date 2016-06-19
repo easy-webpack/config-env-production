@@ -61,6 +61,7 @@ export function production(compress = false, devtool = 'source-map') {
         },
         outputPath: this.output.path
       },
+
       plugins: [
         /**
          * Plugin: WebpackMd5Hash
