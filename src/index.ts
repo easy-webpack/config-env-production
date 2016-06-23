@@ -4,7 +4,7 @@ import * as webpack from 'webpack'
 /**
  * @param exclude add paths to packages that have problems with their sourcemaps
  */
-export function production(compress = false, devtool = 'source-map') {
+export = function production(compress = false, devtool = 'source-map') {
   const CompressionPlugin = compress ? require('compression-webpack-plugin') : null
   const WebpackMd5Hash = require('webpack-md5-hash')
 
