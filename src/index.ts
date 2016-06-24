@@ -4,8 +4,7 @@ import * as webpack from 'webpack'
 /**
  * @param exclude add paths to packages that have problems with their sourcemaps
  */
-export = function production({compress = false, devtool = 'source-map'} = {}) {
-  const CompressionPlugin = compress ? require('compression-webpack-plugin') : null
+export = function production({devtool = 'source-map'} = {}) {
   const WebpackMd5Hash = require('webpack-md5-hash')
 
   return function production(this: WebpackConfig): WebpackConfig {
@@ -111,21 +110,6 @@ export = function production({compress = false, devtool = 'source-map'} = {}) {
       }
     } as WebpackConfig
 
-    if (compress) {
-      config.plugins.push(
-        /**
-         * Plugin: CompressionPlugin
-         * Description: Prepares compressed versions of assets to serve
-         * them with Content-Encoding
-         *
-         * See: https://github.com/webpack/compression-webpack-plugin
-         */
-        new CompressionPlugin({
-          regExp: /\.css$|\.html$|\.js$|\.map$/,
-          threshold: 2 * 1024
-        })
-      )
-    }
     return config
   }
 }
