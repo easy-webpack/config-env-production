@@ -4,7 +4,7 @@ import * as webpack from 'webpack'
 /**
  * @param exclude add paths to packages that have problems with their sourcemaps
  */
-export = function production({devtool = 'source-map'} = {}) {
+export = function production({devtool = 'source-map', dedupe = true} = {}) {
   const WebpackMd5Hash = require('webpack-md5-hash')
 
   return function production(this: WebpackConfig): WebpackConfig {
@@ -71,14 +71,13 @@ export = function production({devtool = 'source-map'} = {}) {
         new WebpackMd5Hash(),
 
         /**
-         * Plugin: DedupePlugin
-         * Description: Prevents the inclusion of duplicate code into your bundle
-         * and instead applies a copy of the function at runtime.
-         *
-         * See: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
-         * See: https://github.com/webpack/docs/wiki/optimization#deduplication
+         * Plugin: LoaderOptionsPlugin
+         * Description: Plugin to set loaders intro minimize mode
          */
-        new webpack.optimize.DedupePlugin(),
+        new webpack.LoaderOptionsPlugin({
+          minimize: true,
+          debug: false
+        }),
 
         new webpack.DefinePlugin({
           '__DEV__': false,
@@ -109,6 +108,18 @@ export = function production({devtool = 'source-map'} = {}) {
         // customAttrAssign: [/\)?\]?=/]
       }
     } as WebpackConfig
+
+    if (dedupe) {
+      /**
+       * Plugin: DedupePlugin
+       * Description: Prevents the inclusion of duplicate code into your bundle
+       * and instead applies a copy of the function at runtime.
+       *
+       * See: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
+       * See: https://github.com/webpack/docs/wiki/optimization#deduplication
+       */
+      config.plugins.push(new webpack.optimize.DedupePlugin());
+    }
 
     return config
   }
