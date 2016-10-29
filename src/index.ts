@@ -1,4 +1,4 @@
-import {WebpackConfig, get} from '@easy-webpack/core'
+import {WebpackConfigWithMetadata, get} from '@easy-webpack/core'
 import * as webpack from 'webpack'
 
 /**
@@ -7,7 +7,7 @@ import * as webpack from 'webpack'
 export = function production({devtool = 'source-map', dedupe = true} = {}) {
   const WebpackMd5Hash = require('webpack-md5-hash')
 
-  return function production(this: WebpackConfig): WebpackConfig {
+  return function production(this: WebpackConfigWithMetadata): WebpackConfigWithMetadata {
     const config = {
       debug: false,
       devtool,
@@ -107,7 +107,7 @@ export = function production({devtool = 'source-map', dedupe = true} = {}) {
         // ],
         // customAttrAssign: [/\)?\]?=/]
       }
-    } as WebpackConfig
+    } as WebpackConfigWithMetadata
 
     if (dedupe) {
       /**
