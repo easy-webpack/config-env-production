@@ -48,7 +48,7 @@
     "webpack-md5-hash": "0.0.5"
   },
   "peerDependencies": {
-    "@easy-webpack/core": "*"
+    "@easy-webpack/core": "1.4.1"
   },
   "ava": {
     "files": [
