@@ -2,9 +2,25 @@ import {WebpackConfigWithMetadata, get} from '@easy-webpack/core'
 import * as webpack from 'webpack'
 
 /**
+ * Html loader advanced options
+ * See: https://github.com/webpack/html-loader#advanced-options
+ */
+const DefaultHtmlLoaderOptions = {
+  minimize: true,
+  removeAttributeQuotes: false,
+  caseSensitive: true,
+  // customAttrSurround: [
+  //   [/#/, /(?:)/],
+  //   [/\*/, /(?:)/],
+  //   [/\[?\(?/, /(?:)/]
+  // ],
+  // customAttrAssign: [/\)?\]?=/]
+} as any
+
+/**
  * @param exclude add paths to packages that have problems with their sourcemaps
  */
-export = function production({devtool = 'source-map', dedupe = true} = {}) {
+export = function production({devtool = 'source-map', dedupe = true, htmlLoaderOptions = DefaultHtmlLoaderOptions} = {}) {
   const WebpackMd5Hash = require('webpack-md5-hash')
 
   return function production(this: WebpackConfigWithMetadata): WebpackConfigWithMetadata {
@@ -88,25 +104,15 @@ export = function production({devtool = 'source-map', dedupe = true} = {}) {
             'NODE_ENV': JSON.stringify(this.metadata.ENV),
             'HMR': this.metadata.HMR,
           }
+        }),
+
+        new webpack.LoaderOptionsPlugin({
+          options: {
+            htmlLoader: htmlLoaderOptions
+          }
         })
       ].concat(get(this, 'plugins', [])),
 
-      /**
-       * Html loader advanced options
-       *
-       * See: https://github.com/webpack/html-loader#advanced-options
-       */
-      htmlLoader: {
-        minimize: true,
-        removeAttributeQuotes: false,
-        caseSensitive: true,
-        // customAttrSurround: [
-        //   [/#/, /(?:)/],
-        //   [/\*/, /(?:)/],
-        //   [/\[?\(?/, /(?:)/]
-        // ],
-        // customAttrAssign: [/\)?\]?=/]
-      }
     } as WebpackConfigWithMetadata
 
     if (dedupe) {
