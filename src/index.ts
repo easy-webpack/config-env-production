@@ -25,7 +25,6 @@ export = function production({devtool = 'source-map', dedupe = true, htmlLoaderO
 
   return function production(this: WebpackConfigWithMetadata): WebpackConfigWithMetadata {
     const config = {
-      debug: false,
       devtool,
       /**
        * Options affecting the output of the compilation.
