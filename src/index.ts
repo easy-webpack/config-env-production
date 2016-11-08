@@ -90,8 +90,12 @@ export = function production({devtool = 'source-map', dedupe = true, htmlLoaderO
          * Description: Plugin to set loaders intro minimize mode
          */
         new (webpack as any).LoaderOptionsPlugin({
-          minimize: true,
-          debug: false
+          options: {
+            htmlLoader: {
+              minimize: true,
+              debug: false
+            }
+          }
         }),
 
         new webpack.DefinePlugin({
