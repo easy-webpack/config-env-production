@@ -91,10 +91,7 @@ export = function production({devtool = 'source-map', dedupe = true, htmlLoaderO
          */
         new (webpack as any).LoaderOptionsPlugin({
           options: {
-            htmlLoader: {
-              minimize: true,
-              debug: false
-            }
+            htmlLoader: htmlLoaderOptions
           }
         }),
 
@@ -106,12 +103,6 @@ export = function production({devtool = 'source-map', dedupe = true, htmlLoaderO
             'ENV': JSON.stringify(this.metadata.ENV),
             'NODE_ENV': JSON.stringify(this.metadata.ENV),
             'HMR': this.metadata.HMR,
-          }
-        }),
-
-        new (webpack as any).LoaderOptionsPlugin({
-          options: {
-            htmlLoader: htmlLoaderOptions
           }
         })
       ].concat(get(this, 'plugins', [])),
