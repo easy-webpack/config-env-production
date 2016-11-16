@@ -20,7 +20,7 @@ const DefaultHtmlLoaderOptions = {
 /**
  * @param exclude add paths to packages that have problems with their sourcemaps
  */
-export = function production({devtool = 'source-map', dedupe = true, htmlLoaderOptions = DefaultHtmlLoaderOptions} = {}) {
+export = function production({devtool = 'source-map', dedupe = false, htmlLoaderOptions = DefaultHtmlLoaderOptions} = {}) {
   const WebpackMd5Hash = require('webpack-md5-hash')
 
   return function production(this: WebpackConfigWithMetadata): WebpackConfigWithMetadata {
@@ -57,25 +57,6 @@ export = function production({devtool = 'source-map', dedupe = true, htmlLoaderO
         chunkFilename: '[id].[chunkhash].chunk.js'
       },
 
-      /**
-       * Webpack Development Server configuration
-       * Description: The webpack-dev-server is a little node.js Express server.
-       * The server emits information about the compilation state to the client,
-       * which reacts to those events.
-       *
-       * See: https://webpack.github.io/docs/webpack-dev-server.html
-       */
-      devServer: {
-        port: this.metadata.port,
-        host: this.metadata.host,
-        historyApiFallback: true,
-        watchOptions: {
-          aggregateTimeout: 300,
-          poll: 1000
-        },
-        outputPath: this.output.path
-      },
-
       plugins: [
         /**
          * Plugin: WebpackMd5Hash
@@ -110,15 +91,7 @@ export = function production({devtool = 'source-map', dedupe = true, htmlLoaderO
     } as WebpackConfigWithMetadata
 
     if (dedupe) {
-      /**
-       * Plugin: DedupePlugin
-       * Description: Prevents the inclusion of duplicate code into your bundle
-       * and instead applies a copy of the function at runtime.
-       *
-       * See: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
-       * See: https://github.com/webpack/docs/wiki/optimization#deduplication
-       */
-      config.plugins.push(new webpack.optimize.DedupePlugin());
+      console.error(`Note: Dedupe plugin was deprecated by Webpack`)
     }
 
     return config
